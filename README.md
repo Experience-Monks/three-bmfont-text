@@ -6,7 +6,7 @@
 
 [(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-3d.js)
 
-Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more.
+Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more. About 8kb after minification.
 
 Below is an example that uses [load-bmfont](https://www.npmjs.com/package/load-bmfont) to parse BMFont files on the fly with XHR:
 
