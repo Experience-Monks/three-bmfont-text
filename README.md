@@ -4,7 +4,7 @@
 
 ![screenshot](http://i.imgur.com/fJEeuPs.png)
 
-[(click for demo)[https://jam3.github.io/three-bmfont-text]] - [(source)[test/test-3d.js]]
+((click for demo))[https://jam3.github.io/three-bmfont-text] - ((source))[test/test-3d.js]
 
 Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more.
 
