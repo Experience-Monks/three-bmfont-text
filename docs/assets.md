@@ -8,7 +8,7 @@ See [the LibGDX wiki](https://github.com/libgdx/libgdx/wiki/Hiero) for some tool
 
 This module expects the provided fonts to be objects that look like this: 
 
-```json
+```js
 {
      pages: [
          "sheet_0.png", 
