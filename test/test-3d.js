@@ -39,7 +39,7 @@ function start(font, texture) {
 
   //create our text geometry
   var geom = createText({
-    text: copy,  //the copy to render
+    text: copy,  //the string to render
     font: font,  //the bitmap font definition
     width: 1000, //optional width for word-wrap
   })

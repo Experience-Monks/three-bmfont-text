@@ -103,8 +103,8 @@ function getQuadUVs(glyphs, texWidth, texHeight, flipY) {
     var bitmap = glyph.data
     var xoff = bitmap.xoffset
     var yoff = bitmap.yoffset 
-    var bw = (bitmap.x+bitmap.width+0)
-    var bh = (bitmap.y+bitmap.height+0)
+    var bw = (bitmap.x+bitmap.width)
+    var bh = (bitmap.y+bitmap.height)
 
     //top left position
     var u0 = bitmap.x / texWidth
@@ -114,7 +114,7 @@ function getQuadUVs(glyphs, texWidth, texHeight, flipY) {
 
     if (flipY) {
       v1 = (texHeight-bitmap.y) / texHeight
-      v0 = (texHeight-(bitmap.y+bitmap.height)) / texHeight
+      v0 = (texHeight-bh) / texHeight
     }
 
     //BL
