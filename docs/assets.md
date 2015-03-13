@@ -36,14 +36,14 @@ bmfont2json Arial.fnt > Arial.json
 
 ## parsers
 
-Parsers will be maintained independently. Browser XML parsing (without xml2js) and binary formats are planned.
+Parsers will be maintained independently. 
 
 - [parse-bmfont-ascii](https://www.npmjs.com/package/parse-bmfont-ascii) (text)
 - [parse-bmfont-xml](https://www.npmjs.com/package/parse-bmfont-xml)
 
 ## loaders
 
-For convenience, the [load-bmfont](https://www.npmjs.com/package/load-bmfont) module wraps the various formats for Node/Browser.
+For convenience, the [load-bmfont](https://www.npmjs.com/package/load-bmfont) module wraps the above formats for Node/Browser.
 
 ```js
 var load = require('load-bmfont')
