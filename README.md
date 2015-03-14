@@ -119,6 +119,10 @@ See [docs/sdf.md](docs/sdf.md)
 
 See [docs/multi.md](docs/multi.md)
 
+### See Also
+
+See [text-modules](https://github.com/mattdesl/text-modules) for more text and font related tools.
+
 ## License
 
 MIT, see [LICENSE.md](http://github.com/Jam3/three-bmfont-text/blob/master/LICENSE.md) for details.
