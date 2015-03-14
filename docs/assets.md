@@ -93,7 +93,7 @@ var xhr = require('xhr')
 var unpack = require('unpack-bmfonts')
 
 xhr({
-  url: url,
+  url: 'fonts/all.bin',
   responseType: 'arraybuffer'
 }, function(err, res, arrayBuf) {
   if (err) 
