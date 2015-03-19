@@ -69,7 +69,7 @@ TextMesh.prototype.update = function(opt) {
 
   //get indices
   var quadCount = glyphs.length
-  var indices = createIndices({ type: 'uint32', clockwise: true, count: quadCount })
+  var indices = createIndices({ clockwise: true, count: quadCount })
 
   this._uvs.array = uvs
   this._uvs.needsUpdate = true
