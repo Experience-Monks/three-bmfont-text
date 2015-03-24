@@ -12,19 +12,19 @@
   "dependencies": {
     "inherits": "^2.0.1",
     "layout-bmfont-text": "^1.0.0",
-    "quad-indices": "^1.0.0",
-    "xtend": "^4.0.0"
+    "quad-indices": "^1.0.0"
   },
   "devDependencies": {
     "bluebird": "^2.9.14",
     "browserify": "^9.0.3",
-    "load-bmfont": "^1.0.0",
     "budo": "^1.2.2",
     "garnish": "^2.1.0",
+    "load-bmfont": "^1.0.0",
     "three": "^0.70.0",
     "three-orbit-viewer": "^69.2.9",
     "uglify-js": "^2.4.17",
-    "watchify": "^2.4.0"
+    "watchify": "^2.4.0",
+    "xtend": "^4.0.0"
   },
   "scripts": {
     "build": "browserify test/test-3d.js | uglifyjs -cm > test/bundle.js",

@@ -1,7 +1,7 @@
 var createLayout = require('layout-bmfont-text')
-var xtend = require('xtend')
 var inherits = require('inherits')
 var createIndices = require('quad-indices')
+var utils = require('./lib/utils')
 
 var Base = THREE.BufferGeometry
 
@@ -55,7 +55,7 @@ TextMesh.prototype.update = function(opt) {
   })
 
   //get vec2 quad positions 
-  var positions = getQuadPositions(glyphs, this.layout, font)
+  var positions = getQuadPositions(glyphs, this.layout)
 
   //get vec2 texcoords
   var flipY = opt.flipY !== false
@@ -81,6 +81,38 @@ TextMesh.prototype.update = function(opt) {
   this._positions.needsUpdate = true
 }
 
+TextMesh.prototype.computeBoundingSphere = function() {
+    if (this.boundingSphere === null) 
+      this.boundingSphere = new THREE.Sphere()
+
+  var positions = this.attributes.position.array
+  var itemSize = this.attributes.position.itemSize
+  if (!positions || !itemSize || positions.length < 2) {
+    this.boundingSphere.radius = 0
+    this.boundingSphere.center.set(0, 0, 0)
+    return
+  }
+  utils.computeSphere(positions, this.boundingSphere)
+  if (isNaN(this.boundingSphere.radius))
+    console.error('THREE.BufferGeometry.computeBoundingSphere(): '
+        + 'Computed radius is NaN. The '
+        + '"position" attribute is likely to have NaN values.')
+}
+
+TextMesh.prototype.computeBoundingBox = function() {
+    if (this.boundingBox === null) 
+      this.boundingBox = new THREE.Box3()
+
+  var bbox = this.boundingBox
+  var positions = this.attributes.position.array
+  var itemSize = this.attributes.position.itemSize
+  if (!positions || !itemSize || positions.length < 2) {
+    bbox.makeEmpty()
+    return
+  }
+  utils.computeBox(positions, bbox)
+}
+
 function getQuadPages(glyphs) {
   var pages = new Float32Array(glyphs.length * 4 * 1)
   var i = 0
@@ -97,12 +129,9 @@ function getQuadPages(glyphs) {
 function getQuadUVs(glyphs, texWidth, texHeight, flipY) {
   var uvs = new Float32Array(glyphs.length * 4 * 2)
   var i = 0
-  var z = 0 
 
   glyphs.forEach(function(glyph) {
     var bitmap = glyph.data
-    var xoff = bitmap.xoffset
-    var yoff = bitmap.yoffset 
     var bw = (bitmap.x+bitmap.width)
     var bh = (bitmap.y+bitmap.height)
 
@@ -133,10 +162,9 @@ function getQuadUVs(glyphs, texWidth, texHeight, flipY) {
   return uvs
 }
 
-function getQuadPositions(glyphs, layout, font) {
+function getQuadPositions(glyphs, layout) {
   var positions = new Float32Array(glyphs.length * 4 * 2)
   var i = 0
-  var z = 0 
 
   glyphs.forEach(function(glyph) {
     var bitmap = glyph.data
