@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "inherits": "^2.0.1",
-    "layout-bmfont-text": "^1.1.0",
+    "layout-bmfont-text": "^1.2.0",
     "quad-indices": "^1.0.0"
   },
   "devDependencies": {
