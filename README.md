@@ -77,7 +77,7 @@ This method will recompute the text layout and rebuild the WebGL buffers.
 
 #### `geometry.layout`
 
-This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfont-text). This supports metrics for `descender`, `baseline`, `xHeight`, `width`, `height`, etc.
+This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfont-text). This supports metrics for `descender`, `baseline`, `xHeight`, `width`, `height`, `capHeight`, etc.
 
 ## Demos
 
