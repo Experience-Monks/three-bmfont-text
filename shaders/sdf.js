@@ -23,6 +23,8 @@ module.exports = function(opt) {
       "}"
     ].join("\n"),
     fragmentShader: [   
+
+      "#define SQRT2 1.4142135623730951",
       "uniform float opacity;",
       "uniform vec3 color;",
       "uniform sampler2D map;",
@@ -31,8 +33,9 @@ module.exports = function(opt) {
       "varying vec2 vUv;",
       "void main() {",
         "vec4 texColor = texture2D(map, vUv);",
-        "float dst = texColor.a;",
-        "float alpha = smoothstep(0.5 - smooth, 0.5 + smooth, dst);",
+        "float dst = texColor.a;", 
+        "float afwidth = smooth * SQRT2 / (2.0 * gl_FragCoord.w);",
+        "float alpha = smoothstep(0.5 - afwidth, 0.5 + afwidth, dst);",
 
         "gl_FragColor = vec4(color, opacity * alpha);",
         THREE.ShaderChunk["alphatest_fragment"],
