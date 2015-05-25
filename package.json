@@ -12,8 +12,8 @@
   "dependencies": {
     "inherits": "^2.0.1",
     "layout-bmfont-text": "^1.2.0",
-    "xtend": "^4.0.0",
-    "quad-indices": "^1.0.0"
+    "quad-indices": "^2.0.1",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "bluebird": "^2.9.14",
