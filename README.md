@@ -2,11 +2,11 @@
 
 [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
-![screenshot](http://i.imgur.com/fJEeuPs.png)
+[![screenshot](http://i.imgur.com/fJEeuPs.png)](https://jam3.github.io/three-bmfont-text/test)
 
-[(click for demo)](https://jam3.github.io/three-bmfont-text) - [(source)](test/test-3d.js)
+[(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-3d.js)
 
-Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more.
+Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more. About 8kb after minification.
 
 Below is an example that uses [load-bmfont](https://www.npmjs.com/package/load-bmfont) to parse BMFont files on the fly with XHR:
 
@@ -77,7 +77,7 @@ This method will recompute the text layout and rebuild the WebGL buffers.
 
 #### `geometry.layout`
 
-This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfont-text). This supports metrics for `descender`, `baseline`, `xHeight`, `width`, `height`, etc.
+This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfont-text). This supports metrics for `descender`, `baseline`, `xHeight`, `width`, `height`, `capHeight`, etc.
 
 ## Demos
 
@@ -118,6 +118,10 @@ See [docs/sdf.md](docs/sdf.md)
 ### Multi-Texture Rendering
 
 See [docs/multi.md](docs/multi.md)
+
+### See Also
+
+See [text-modules](https://github.com/mattdesl/text-modules) for more text and font related tools.
 
 ## License
 
