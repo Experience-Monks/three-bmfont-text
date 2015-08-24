@@ -79,6 +79,12 @@ This method will recompute the text layout and rebuild the WebGL buffers.
 
 This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfont-text). This supports metrics for `descender`, `baseline`, `xHeight`, `width`, `height`, `capHeight`, etc.
 
+#### `geometry.visibleGlyphs`
+
+A filtered set from `geometry.layout.glyphs` intended to align with the vertex data being used by the underlying BufferAttributes.
+
+This is an array of `{ line, position, index, data }` objects, [see here](https://github.com/Jam3/layout-bmfont-text#layoutglyphs).
+
 ## Demos
 
 To run/build the demos:

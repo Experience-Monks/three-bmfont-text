@@ -53,6 +53,9 @@ TextMesh.prototype.update = function(opt) {
     var bitmap = glyph.data
     return bitmap.width * bitmap.height > 0
   })
+  
+  //provide visible glyphs for convenience
+  this.visibleGlyphs = glyphs;
 
   //get vec2 quad positions 
   var positions = getQuadPositions(glyphs, this.layout)

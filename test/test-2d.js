@@ -54,12 +54,12 @@ function start(font, texture) {
   textAnchor.add(text)
   textAnchor.scale.multiplyScalar(1/(window.devicePixelRatio||1))
   app.scene.add(textAnchor)
-
+  
   //update orthographic
   app.on('tick', function() {
     //update camera
-    width = app.engine.width
-    height = app.engine.height
+    var width = app.engine.width
+    var height = app.engine.height
     app.camera.right = width
     app.camera.bottom = height
     app.camera.updateProjectionMatrix()
