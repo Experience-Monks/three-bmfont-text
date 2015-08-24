@@ -83,7 +83,7 @@ This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfon
 
 A filtered set from `geometry.layout.glyphs` intended to align with the vertex data being used by the underlying BufferAttributes.
 
-This is an array of `{ line, position, index, data }` objects, [see here](https://github.com/Jam3/layout-bmfont-text#layoutglyphs).
+This is an array of `{ line, position, index, data }` objects, [see here](https://github.com/Jam3/layout-bmfont-text#layoutglyphs). For example, this could be used to add a new BufferAttribuet for `line` offset.
 
 ## Demos
 
