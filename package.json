@@ -9,6 +9,9 @@
     "email": "dave.des@gmail.com",
     "url": "https://github.com/mattdesl"
   },
+  "standard": {
+    "globals": [ "THREE" ]
+  },
   "dependencies": {
     "inherits": "^2.0.1",
     "layout-bmfont-text": "^1.2.0",
