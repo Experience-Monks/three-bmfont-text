@@ -2,9 +2,9 @@
 
 [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
-[![screenshot](http://i.imgur.com/fJEeuPs.png)](https://jam3.github.io/three-bmfont-text/test)
+[<img src="http://i.imgur.com/3Tswdau.png" width="65%" />](https://jam3.github.io/three-bmfont-text/test)
 
-[(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-3d.js)
+[(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-shader.js)
 
 Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields with standard derivatives, multi-texture fonts, and more. About 12kb after minification.
 
@@ -116,9 +116,17 @@ npm install
 Then choose one of the demos to run:
 
 ```sh
+# 3D SDF rendering
 npm run test-3d
+
+# 2d bitmap rendering
 npm run test-2d
+
+# multi-page rendering
 npm run test-multi
+
+# custom text shaders
+npm run start
 ```
 
 Open up `localhost:9966` (it may take a few seconds for the initial bundle). Then when you save the corresponding JS file (in [test/](test/)) it should re-bundle and trigger a live-reload event on the browser.
