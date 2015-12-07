@@ -1,7 +1,7 @@
 /*
   This is an example of 3D rendering, using a
-  signed distance field shader for improved edge
-  quality and scaling.
+  signed distance field shader and standard derivatives
+  for improved edge quality and scaling.
 
   We've also enabled anisotropy on the texture for
   crisp rendering at sharp angles.
@@ -10,7 +10,7 @@
 global.THREE = require('three')
 var createOrbitViewer = require('three-orbit-viewer')(THREE)
 var createText = require('../')
-var Shader = require('../shaders/sdf')
+var SDFShader = require('../shaders/sdf')
 
 // load up a 'fnt' and texture
 require('./load')({
@@ -41,14 +41,13 @@ function start (font, texture) {
   var geom = createText({
     text: copy, // the string to render
     font: font, // the bitmap font definition
-    width: 1000, // optional width for word-wrap
+    width: 1000 // optional width for word-wrap
   })
 
   // here we use 'three-bmfont-text/shaders/sdf'
   // to help us build a shader material
-  var material = new THREE.ShaderMaterial(Shader({
+  var material = new THREE.RawShaderMaterial(SDFShader({
     map: texture,
-    smooth: 1 / 32, // the smooth value for SDF
     side: THREE.DoubleSide,
     transparent: true,
     color: 'rgb(230, 230, 230)'
@@ -59,7 +58,7 @@ function start (font, texture) {
   // center it horizontally
   text.position.x = -layout.width / 2
   // origin uses bottom left of last line
-  // so we need to move it down a fair bit 
+  // so we need to move it down a fair bit
   text.position.y = layout.height * 1.035
 
   // scale it down so it fits in our 3D units

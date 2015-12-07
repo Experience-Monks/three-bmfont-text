@@ -1,50 +1,53 @@
 var createLayout = require('layout-bmfont-text')
 var inherits = require('inherits')
 var createIndices = require('quad-indices')
+var buffer = require('three-buffer-vertex-data')
+var assign = require('object-assign')
+
+var vertices = require('./lib/vertices')
 var utils = require('./lib/utils')
 
 var Base = THREE.BufferGeometry
 
-module.exports = function (opt) {
-  return new TextMesh(opt)
+module.exports = function createTextGeometry (opt) {
+  return new TextGeometry(opt)
 }
 
-function TextMesh (opt) {
+function TextGeometry (opt) {
   Base.call(this)
-  var multipage = opt && opt.multipage
-  this.layout = null
 
-  this._positions = new THREE.BufferAttribute(null, 2)
-  this._uvs = new THREE.BufferAttribute(null, 2)
-  if (multipage) {
-    this._pages = new THREE.BufferAttribute(null, 1)
-  }
-  this._indices = new THREE.BufferAttribute(null, 1)
-
-  if (opt) {
-    this.update(opt)
+  if (typeof opt === 'string') {
+    opt = { text: opt }
   }
 
-  this.addAttribute('position', this._positions)
-  this.addAttribute('uv', this._uvs)
-  if (multipage) {
-    this.addAttribute('page', this._pages)
-  }
-  this.addAttribute('index', this._indices)
+  // use these as default values for any subsequent
+  // calls to update()
+  this._opt = assign({}, opt)
+
+  // also do an initial setup...
+  if (opt) this.update(opt)
 }
 
-inherits(TextMesh, Base)
+inherits(TextGeometry, Base)
 
-TextMesh.prototype.update = function (opt) {
-  opt = opt || {}
+TextGeometry.prototype.update = function (opt) {
+  if (typeof opt === 'string') {
+    opt = { text: opt }
+  }
+
+  // use constructor defaults
+  opt = assign({}, this._opt, opt)
+
+  if (!opt.font) {
+    throw new TypeError('must specify a { font } in options')
+  }
+
   this.layout = createLayout(opt)
 
-  // don't allow a deferred creation of multipage
-  // since it requires different buffer layout
-  if (opt.multipage && !this._pages) {
-    throw new Error('must specify multipage: true in constructor')
-  }
+  // get vec2 texcoords
+  var flipY = opt.flipY !== false
 
+  // the desired BMFont data
   var font = opt.font
 
   // determine texture size from font file
@@ -60,34 +63,32 @@ TextMesh.prototype.update = function (opt) {
   // provide visible glyphs for convenience
   this.visibleGlyphs = glyphs
 
-  // get vec2 quad positions
-  var positions = getQuadPositions(glyphs, this.layout)
+  // get common vertex data
+  var positions = vertices.positions(glyphs)
+  var uvs = vertices.uvs(glyphs, texWidth, texHeight, flipY)
+  var indices = createIndices({
+    clockwise: true,
+    type: 'uint16',
+    count: glyphs.length
+  })
 
-  // get vec2 texcoords
-  var flipY = opt.flipY !== false
-  var uvs = getQuadUVs(glyphs, texWidth, texHeight, flipY)
+  // update vertex data
+  buffer.index(this, indices, 1, 'uint16')
+  buffer.attr(this, 'position', positions, 2)
+  buffer.attr(this, 'uv', uvs, 2)
 
-  if (opt.multipage) {
-    var pages = getQuadPages(glyphs)
-    this._pages.array = pages
-    this._pages.needsUpdate = true
+  // update multipage data
+  if (!opt.multipage && 'page' in this.attributes) {
+    // disable multipage rendering
+    this.removeAttribute('page')
+  } else if (opt.multipage) {
+    var pages = vertices.pages(glyphs)
+    // enable multipage rendering
+    buffer.attr(this, 'page', pages, 1)
   }
-
-  // get indices
-  var quadCount = glyphs.length
-  var indices = createIndices({ clockwise: true, count: quadCount })
-
-  this._uvs.array = uvs
-  this._uvs.needsUpdate = true
-
-  this._indices.array = indices
-  this._indices.needsUpdate = true
-
-  this._positions.array = positions
-  this._positions.needsUpdate = true
 }
 
-TextMesh.prototype.computeBoundingSphere = function () {
+TextGeometry.prototype.computeBoundingSphere = function () {
   if (this.boundingSphere === null) {
     this.boundingSphere = new THREE.Sphere()
   }
@@ -107,7 +108,7 @@ TextMesh.prototype.computeBoundingSphere = function () {
   }
 }
 
-TextMesh.prototype.computeBoundingBox = function () {
+TextGeometry.prototype.computeBoundingBox = function () {
   if (this.boundingBox === null) {
     this.boundingBox = new THREE.Box3()
   }
@@ -120,84 +121,4 @@ TextMesh.prototype.computeBoundingBox = function () {
     return
   }
   utils.computeBox(positions, bbox)
-}
-
-function getQuadPages (glyphs) {
-  var pages = new Float32Array(glyphs.length * 4 * 1)
-  var i = 0
-  glyphs.forEach(function (glyph) {
-    var id = glyph.data.page || 0
-    pages[i++] = id
-    pages[i++] = id
-    pages[i++] = id
-    pages[i++] = id
-  })
-  return pages
-}
-
-function getQuadUVs (glyphs, texWidth, texHeight, flipY) {
-  var uvs = new Float32Array(glyphs.length * 4 * 2)
-  var i = 0
-
-  glyphs.forEach(function (glyph) {
-    var bitmap = glyph.data
-    var bw = (bitmap.x + bitmap.width)
-    var bh = (bitmap.y + bitmap.height)
-
-    // top left position
-    var u0 = bitmap.x / texWidth
-    var v1 = bitmap.y / texHeight
-    var u1 = bw / texWidth
-    var v0 = bh / texHeight
-
-    if (flipY) {
-      v1 = (texHeight - bitmap.y) / texHeight
-      v0 = (texHeight - bh) / texHeight
-    }
-
-    // BL
-    uvs[i++] = u0
-    uvs[i++] = v1
-    // TL
-    uvs[i++] = u0
-    uvs[i++] = v0
-    // TR
-    uvs[i++] = u1
-    uvs[i++] = v0
-    // BR
-    uvs[i++] = u1
-    uvs[i++] = v1
-  })
-  return uvs
-}
-
-function getQuadPositions (glyphs, layout) {
-  var positions = new Float32Array(glyphs.length * 4 * 2)
-  var i = 0
-
-  glyphs.forEach(function (glyph) {
-    var bitmap = glyph.data
-
-    // bottom left position
-    var x = glyph.position[0] + bitmap.xoffset
-    var y = glyph.position[1] + bitmap.yoffset
-
-    // quad size
-    var w = bitmap.width
-    var h = bitmap.height
-
-    // BL
-    positions[i++] = x
-    positions[i++] = y
-    // TL
-    positions[i++] = x
-    positions[i++] = y + h
-    // TR
-    positions[i++] = x + w
-    positions[i++] = y + h
-    // BR
-    positions[i++] = x + w
-    positions[i++] = y
-  })
-  return positions
 }

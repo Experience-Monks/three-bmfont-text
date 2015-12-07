@@ -10,19 +10,22 @@ https://github.com/libgdx/libgdx/wiki/Distance-field-fonts
 
 ## Shader
 
-This module exports `shaders/sdf` for convenience. Options:
+This module exports `shaders/sdf` for convenience. It uses standard derivatives extension for anti-aliasing if available, otherwise falls back to `gl_FragCoord.w`. 
 
-- `smooth` the smoothing value for the signed distance field, defaults to `1/16`
-- `alphaTest` the alpha test value, defaults to 0.06
+Options:
+
 - `opacity` the opacity, default 1.0
 - `color` the color to tint the text, default 0xffffff
+- `alphaTest` the alpha test value, defaults to 0.0001
+- `precision` the fragment shader precision, default `'highp'`
+
+*Note:* `RawShaderMaterial` is required in order to support a wide range of ThreeJS versions.
 
 ```js
 var Shader = require('three-bmfont-text/shaders/sdf')
 
-var material = new THREE.ShaderMaterial(Shader({
+var material = new THREE.RawShaderMaterial(Shader({
   map: fontAtlas,
-  smooth: 1/32,
   side: THREE.DoubleSide,
   transparent: true,
   color: 'rgb(230, 230, 230)'

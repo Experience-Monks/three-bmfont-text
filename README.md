@@ -6,7 +6,7 @@
 
 [(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-3d.js)
 
-Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields, multi-texture fonts, and more. About 8kb after minification.
+Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields with standard derivatives, multi-texture fonts, and more. About 12kb after minification.
 
 Below is an example that uses [load-bmfont](https://www.npmjs.com/package/load-bmfont) to parse BMFont files on the fly with XHR:
 
@@ -15,30 +15,34 @@ var createGeometry = require('three-bmfont-text')
 var loadFont = require('load-bmfont')
 
 loadFont('fonts/Arial.fnt', function(err, font) {
-  //create a geometry of packed bitmap glyphs, 
-  //word wrapped to 300px and right-aligned
+  // create a geometry of packed bitmap glyphs, 
+  // word wrapped to 300px and right-aligned
   var geometry = createGeometry({
-    text: 'Lorem ipsum\nDolor sit amet.',
     width: 300,
     align: 'right',
     font: font
   })
+
+  // change text and other options as desired
+  // the options sepcified in constructor will
+  // be used as defaults
+  geometry.update('Lorem ipsum\nDolor sit amet.')
   
-  //the resulting layout has metrics and bounds
+  // the resulting layout has metrics and bounds
   console.log(geometry.layout.height)
   console.log(geometry.layout.descender)
     
-  //the texture atlas containing our glyphs
+  // the texture atlas containing our glyphs
   var texture = THREE.ImageUtils.loadTexture('fonts/Arial.png')
 
-  //We can use plain old bitmap materials
+  // we can use a simple ThreeJS material
   var material = new THREE.MeshBasicMaterial({
     map: texture,
     transparent: true,
     color: 0xaaffff
   })
 
-  //now do something with our text mesh ! 
+  // now do something with our mesh!
   var mesh = new THREE.Mesh(geometry, material)
 })
 ```
@@ -51,7 +55,13 @@ The glyph layout is built on [layout-bmfont-text](https://github.com/Jam3/layout
 
 #### `geometry = createText(opt)`
 
-Returns a new BufferGeometry with the given options. The ThreeJS-specific options:
+Returns a new BufferGeometry with the given options. 
+
+**Note:** The options set in the constructor become the defaults for any subsequent calls to `update()`.
+
+`opt` can be an options object, or a String – equivalent to `{ text: str }`.
+
+Options specific to ThreeJS:
 
 - `flipY` (boolean) whether the texture will be Y-flipped (default true)
 - `multipage` (boolean) whether to construct this geometry with an extra buffer containing page IDs. This is necessary for multi-texture fonts (default false)
@@ -71,9 +81,15 @@ The rest of the options are passed to [layout-bmfont-text](https://github.com/Ja
 
 #### `geometry.update(opt)`
 
-Re-builds the geometry using the given options. All options are the same as in the constructor, except for `multipage` which must be specified during construction-time. 
+Re-builds the geometry using the given options. Any options not specified here will default to those set in the constructor.
 
 This method will recompute the text layout and rebuild the WebGL buffers.
+
+`opt` can be a string, which is equivalent to:
+
+```js
+geometry.update({ text: 'new text' })
+```
 
 #### `geometry.layout`
 
@@ -83,7 +99,7 @@ This is an instance of [layout-bmfont-text](https://github.com/Jam3/layout-bmfon
 
 A filtered set from `geometry.layout.glyphs` intended to align with the vertex data being used by the underlying BufferAttributes.
 
-This is an array of `{ line, position, index, data }` objects, [see here](https://github.com/Jam3/layout-bmfont-text#layoutglyphs). For example, this could be used to add a new BufferAttribuet for `line` offset.
+This is an array of `{ line, position, index, data }` objects, [see here](https://github.com/Jam3/layout-bmfont-text#layoutglyphs). For example, this could be used to add a new BufferAttribute for `line` offset.
 
 ## Demos
 
