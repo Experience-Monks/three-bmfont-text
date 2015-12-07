@@ -11,7 +11,6 @@ varying float vLine;
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 #pragma glslify: aastep = require('glsl-aastep')
-#pragma glslify: hsl2rgb = require('glsl-hsl2rgb')
 
 void main() {
   vec4 texColor = texture2D(map, vUv);

@@ -26,7 +26,6 @@
     "browserify": "^12.0.1",
     "budo": "^7.0.2",
     "glsl-aastep": "^1.0.1",
-    "glsl-hsl2rgb": "^1.1.0",
     "glsl-noise": "0.0.0",
     "glslify": "^4.0.0",
     "load-bmfont": "^1.0.0",
