@@ -156,6 +156,9 @@ See [text-modules](https://github.com/mattdesl/text-modules) for more text and f
   - changed to `RawShaderMaterial` for proper ThreeJS support across versions
   - SDF shader now uses standard derivatives by default for better anti-aliasing, with a fall back using `gl_FragCoord.w` 
   - SDF shader `smooth` option has been removed for less API surface area
+  - Added `precision` option to built-in shaders
+  - default `alphaTest` for SDF has changed to 0.0001
+  - Multipage shader also includes `alphaTest` now
 - `1.x`
   - uses `ShaderMaterial`, only really supports r69
   - must call `update()` with *all* options desired
