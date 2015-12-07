@@ -12,17 +12,17 @@ global.THREE = require('three')
 var createOrbitViewer = require('three-orbit-viewer')(THREE)
 var createText = require('../')
 
-require('./load')({ 
+require('./load')({
   font: 'fnt/Lato-Regular-64.fnt',
   image: 'fnt/lato.png'
 }, start)
 
-function start(font, texture) {
+function start (font, texture) {
   var app = createOrbitViewer({
-      clearColor: 'rgb(80, 80, 80)',
-      clearAlpha: 1.0,
-      fov: 65,
-      position: new THREE.Vector3()
+    clearColor: 'rgb(80, 80, 80)',
+    clearAlpha: 1.0,
+    fov: 65,
+    position: new THREE.Vector3()
   })
 
   app.camera = new THREE.OrthographicCamera()
@@ -49,15 +49,15 @@ function start(font, texture) {
   var text = new THREE.Mesh(geom, material)
   var padding = 40
   text.position.set(padding, -layout.descender + layout.height + padding, 0)
-    
+
   var textAnchor = new THREE.Object3D()
   textAnchor.add(text)
-  textAnchor.scale.multiplyScalar(1/(window.devicePixelRatio||1))
+  textAnchor.scale.multiplyScalar(1 / (window.devicePixelRatio || 1))
   app.scene.add(textAnchor)
-  
-  //update orthographic
-  app.on('tick', function() {
-    //update camera
+
+  // update orthographic
+  app.on('tick', function () {
+    // update camera
     var width = app.engine.width
     var height = app.engine.height
     app.camera.right = width

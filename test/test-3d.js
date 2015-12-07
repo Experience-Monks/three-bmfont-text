@@ -4,7 +4,7 @@
   quality and scaling.
 
   We've also enabled anisotropy on the texture for
-  crisp rendering at sharp angles. 
+  crisp rendering at sharp angles.
  */
 
 global.THREE = require('three')
@@ -12,23 +12,23 @@ var createOrbitViewer = require('three-orbit-viewer')(THREE)
 var createText = require('../')
 var Shader = require('../shaders/sdf')
 
-//load up a 'fnt' and texture
-require('./load')({ 
+// load up a 'fnt' and texture
+require('./load')({
   font: 'fnt/DejaVu-sdf.fnt',
   image: 'fnt/DejaVu-sdf.png'
 }, start)
 
-function start(font, texture) {
+function start (font, texture) {
   var app = createOrbitViewer({
-      clearColor: 'rgb(40, 40, 40)',
-      clearAlpha: 1.0,
-      fov: 55,
-      position: new THREE.Vector3(0, -4, -2)
+    clearColor: 'rgb(40, 40, 40)',
+    clearAlpha: 1.0,
+    fov: 55,
+    position: new THREE.Vector3(0, -4, -2)
   })
 
   var maxAni = app.renderer.getMaxAnisotropy()
 
-  //setup our texture with some nice mipmapping etc
+  // setup our texture with some nice mipmapping etc
   texture.needsUpdate = true
   texture.minFilter = THREE.LinearMipMapLinearFilter
   texture.magFilter = THREE.LinearFilter
@@ -37,18 +37,18 @@ function start(font, texture) {
 
   var copy = getCopy()
 
-  //create our text geometry
+  // create our text geometry
   var geom = createText({
-    text: copy,  //the string to render
-    font: font,  //the bitmap font definition
-    width: 1000, //optional width for word-wrap
+    text: copy, // the string to render
+    font: font, // the bitmap font definition
+    width: 1000, // optional width for word-wrap
   })
 
-  //here we use 'three-bmfont-text/shaders/sdf'
-  //to help us build a shader material
+  // here we use 'three-bmfont-text/shaders/sdf'
+  // to help us build a shader material
   var material = new THREE.ShaderMaterial(Shader({
     map: texture,
-    smooth: 1/32, //the smooth value for SDF
+    smooth: 1 / 32, // the smooth value for SDF
     side: THREE.DoubleSide,
     transparent: true,
     color: 'rgb(230, 230, 230)'
@@ -56,26 +56,25 @@ function start(font, texture) {
 
   var layout = geom.layout
   var text = new THREE.Mesh(geom, material)
-  //center it horizontally
-  text.position.x = -layout.width/2
-  //origin uses bottom left of last line
-  //so we need to move it down a fair bit 
+  // center it horizontally
+  text.position.x = -layout.width / 2
+  // origin uses bottom left of last line
+  // so we need to move it down a fair bit 
   text.position.y = layout.height * 1.035
 
-  //scale it down so it fits in our 3D units
+  // scale it down so it fits in our 3D units
   var textAnchor = new THREE.Object3D()
   textAnchor.scale.multiplyScalar(-0.005)
   textAnchor.add(text)
   app.scene.add(textAnchor)
 
-  //scroll text
-  app.on('tick', function(t) {
+  // scroll text
+  app.on('tick', function (t) {
     text.position.y -= 0.9
   })
 }
 
-
-function getCopy() {
+function getCopy () {
   return [
     'Total characters: 3,326',
     'Click + drag to rotate',
