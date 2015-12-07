@@ -1,9 +1,9 @@
 /*
   This is an example of 2D rendering, simply
-  using bitmap fonts in orthographic space. 
+  using bitmap fonts in orthographic space.
 
   var geom = createText({
-    multipage: true, 
+    multipage: true,
     ... other options
   })
  */
