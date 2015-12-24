@@ -1,6 +1,6 @@
 var assign = require('object-assign')
 
-module.exports = function (opt) {
+module.exports = function createMultipageShader (opt) {
   opt = opt || {}
   var opacity = typeof opt.opacity === 'number' ? opt.opacity : 1
   var precision = opt.precision || 'highp'

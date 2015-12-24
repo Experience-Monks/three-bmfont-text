@@ -31,3 +31,5 @@ var material = new THREE.RawShaderMaterial(Shader({
   color: 'rgb(230, 230, 230)'
 }))
 ```
+
+There is also `shaders/basic` which acts like a typical `THREE.MeshBasicMaterial`, but using a raw shader. This is useful when you want a consistent interface for manipulating color/texture/etc.

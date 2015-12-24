@@ -1,6 +1,6 @@
 var assign = require('object-assign')
 
-module.exports = function createSDFShader (opt) {
+module.exports = function createBasicShader (opt) {
   opt = opt || {}
   var opacity = typeof opt.opacity === 'number' ? opt.opacity : 1
   var alphaTest = typeof opt.alphaTest === 'number' ? opt.alphaTest : 0.0001
@@ -32,28 +32,14 @@ module.exports = function createSDFShader (opt) {
       '}'
     ].join('\n'),
     fragmentShader: [
-      '#ifdef GL_OES_standard_derivatives',
-      '#extension GL_OES_standard_derivatives : enable',
-      '#endif',
       'precision ' + precision + ' float;',
       'uniform float opacity;',
       'uniform vec3 color;',
       'uniform sampler2D map;',
       'varying vec2 vUv;',
 
-      'float aastep(float value) {',
-      '  #ifdef GL_OES_standard_derivatives',
-      '    float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;',
-      '  #else',
-      '    float afwidth = (1.0 / 32.0) * (1.4142135623730951 / (2.0 * gl_FragCoord.w));',
-      '  #endif',
-      '  return smoothstep(0.5 - afwidth, 0.5 + afwidth, value);',
-      '}',
-
       'void main() {',
-      '  vec4 texColor = texture2D(map, vUv);',
-      '  float alpha = aastep(texColor.a);',
-      '  gl_FragColor = vec4(color, opacity * alpha);',
+      '  gl_FragColor = texture2D(map, vUv) * vec4(color, opacity);',
       alphaTest === 0
         ? ''
         : '  if (gl_FragColor.a < ' + alphaTest + ') discard;',
