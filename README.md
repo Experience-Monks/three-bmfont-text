@@ -8,7 +8,7 @@
 
 Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields with standard derivatives, multi-texture fonts, and more. About 12kb after minification.
 
-Works on Three r69-73, and possibly more.
+Works on Three r69-73, r79, and possibly more.
 
 Below is an example that uses [load-bmfont](https://www.npmjs.com/package/load-bmfont) to parse BMFont files on the fly with XHR:
 
@@ -35,17 +35,19 @@ loadFont('fonts/Arial.fnt', function(err, font) {
   console.log(geometry.layout.descender)
     
   // the texture atlas containing our glyphs
-  var texture = THREE.ImageUtils.loadTexture('fonts/Arial.png')
+  var TextureLoader = new THREE.TextureLoader();
+  TextureLoader.load('fonts/Arial.png', function(texture){
+    
+    // we can use a simple ThreeJS material
+    var material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      color: 0xaaffff
+    })
 
-  // we can use a simple ThreeJS material
-  var material = new THREE.MeshBasicMaterial({
-    map: texture,
-    transparent: true,
-    color: 0xaaffff
+    var mesh = new THREE.Mesh(geometry, material)
   })
-
   // now do something with our mesh!
-  var mesh = new THREE.Mesh(geometry, material)
 })
 ```
 
