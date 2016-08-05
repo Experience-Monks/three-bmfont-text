@@ -20,7 +20,7 @@
     "object-assign": "^4.0.1",
     "quad-indices": "^2.0.1",
     "three": "^0.79.0",
-    "three-buffer-vertex-data": "^1.0.0"
+    "three-buffer-vertex-data": "^1.0.1"
   },
   "devDependencies": {
     "bluebird": "^2.9.14",
