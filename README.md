@@ -45,9 +45,9 @@ loadFont('fonts/Arial.fnt', function(err, font) {
       color: 0xaaffff
     })
 
+    // now do something with our mesh!
     var mesh = new THREE.Mesh(geometry, material)
   })
-  // now do something with our mesh!
 })
 ```
 
