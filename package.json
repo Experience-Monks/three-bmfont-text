@@ -19,7 +19,7 @@
     "layout-bmfont-text": "^1.2.0",
     "object-assign": "^4.0.1",
     "quad-indices": "^2.0.1",
-    "three": "^0.70.1",
+    "three": "^0.79.1",
     "three-buffer-vertex-data": "^1.0.0"
   },
   "devDependencies": {
