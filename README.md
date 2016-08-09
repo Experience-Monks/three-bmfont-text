@@ -35,9 +35,8 @@ loadFont('fonts/Arial.fnt', function(err, font) {
   console.log(geometry.layout.descender)
     
   // the texture atlas containing our glyphs
-  var TextureLoader = new THREE.TextureLoader();
-  TextureLoader.load('fonts/Arial.png', function(texture){
-    
+  var textureLoader = new THREE.TextureLoader();
+  textureLoader.load('fonts/Arial.png', function (texture) {
     // we can use a simple ThreeJS material
     var material = new THREE.MeshBasicMaterial({
       map: texture,
