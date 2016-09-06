@@ -39,7 +39,7 @@ function start (font, texture) {
 
   var container = new THREE.Object3D()
   app.scene.add(container)
-  var count = 20
+  var count = 25
   for (var i = 0; i < count; i++) {
     createGlyph()
   }
@@ -63,7 +63,7 @@ function start (font, texture) {
   function createGlyph () {
     var angle = (Math.random() * 2 - 1) * Math.PI
     var geom = createText({
-      text: quotes[Math.floor(Math.random() * quotes.length)].split(/\s+/g).slice(0, 3).join(' '),
+      text: quotes[Math.floor(Math.random() * quotes.length)].split(/\s+/g).slice(0, 6).join(' '),
       font: font,
       align: 'left',
       flipY: texture.flipY
