@@ -6,7 +6,7 @@
 
 [(click for demo)](https://jam3.github.io/three-bmfont-text/test) - [(source)](test/test-shader.js)
 
-Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, signed distance fields with standard derivatives, multi-texture fonts, and more. About 12kb after minification.
+Bitmap font rendering for ThreeJS, batching glyphs into a single BufferGeometry. Supports word-wrapping, letter spacing, kerning, [signed distance fields](./docs/sdf.md) with standard derivatives, [multi-channel signed distance fields](./docs/sdf.md#msdf-shader), multi-texture fonts, and more. About 12kb after minification.
 
 Works on Three r69-73, r79, and possibly more.
 
@@ -123,6 +123,9 @@ npm run test-3d
 # 2d bitmap rendering
 npm run test-2d
 
+# 2D MSDF rendering
+npm run test-msdf
+
 # multi-page rendering
 npm run test-multi
 
@@ -144,7 +147,7 @@ npm run build
 
 See [docs/assets.md](docs/assets.md)
 
-### Signed Distance Field Rendering
+### (Multi-)Signed Distance Field Rendering
 
 See [docs/sdf.md](docs/sdf.md)
 
