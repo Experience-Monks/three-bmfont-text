@@ -161,6 +161,9 @@ See [text-modules](https://github.com/mattdesl/text-modules) for more text and f
 
 ## Change Log
 
+- `2.0.1`
+  - Added `shaders/msdf.js` and docs around MSDF usage
+
 - `2.0.0`
   - now uses [three-buffer-vertex-data](https://github.com/Jam3/three-buffer-vertex-data) to handle some ThreeJS version differences; this may lead to a slight memory increase
   - constructor holds default options for subsequent calls to `update()`
