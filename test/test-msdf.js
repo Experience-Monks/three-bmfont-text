@@ -39,7 +39,7 @@ function start (font, texture) {
 
   var container = new THREE.Object3D()
   app.scene.add(container)
-  var count = 100
+  var count = 20
   for (var i = 0; i < count; i++) {
     createGlyph()
   }
@@ -78,7 +78,7 @@ function start (font, texture) {
     var layout = geom.layout
     var text = new THREE.Mesh(geom, material)
     text.position.set(0, -layout.descender + layout.height, 0)
-    text.scale.multiplyScalar(Math.random() * 1.5 + 0.05)
+    text.scale.multiplyScalar(Math.random() * 0.5 + 0.5)
 
     var textAnchor = new THREE.Object3D()
     textAnchor.add(text)
