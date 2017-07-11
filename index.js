@@ -6,6 +6,7 @@ var assign = require('object-assign')
 
 var vertices = require('./lib/vertices')
 var utils = require('./lib/utils')
+var THREE = THREE || require('three')
 
 var Base = THREE.BufferGeometry
 
