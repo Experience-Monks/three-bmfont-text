@@ -7,12 +7,14 @@ module.exports = function createMSDFShader (opt) {
   var precision = opt.precision || 'highp';
   var color = opt.color;
   var map = opt.map;
+  var negate = typeof opt.negate === 'boolean' ? opt.negate : true;
 
   // remove to satisfy r73
   delete opt.map;
   delete opt.color;
   delete opt.precision;
   delete opt.opacity;
+  delete opt.negate;
 
   return assign({
     uniforms: {
@@ -46,7 +48,7 @@ module.exports = function createMSDFShader (opt) {
       '}',
 
       'void main() {',
-      '  vec3 sample = 1.0 - texture2D(map, vUv).rgb;',
+      '  vec3 sample = ' + (negate ? '1.0 - ' : '') + 'texture2D(map, vUv).rgb;',
       '  float sigDist = median(sample.r, sample.g, sample.b) - 0.5;',
       '  float alpha = clamp(sigDist/fwidth(sigDist) + 0.5, 0.0, 1.0);',
       '  gl_FragColor = vec4(color.xyz, alpha * opacity);',
