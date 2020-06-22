@@ -2,7 +2,6 @@ var createLayout = require('layout-bmfont-text')
 var inherits = require('inherits')
 var createIndices = require('quad-indices')
 var buffer = require('three-buffer-vertex-data')
-var assign = require('object-assign')
 
 var vertices = require('./lib/vertices')
 var utils = require('./lib/utils')
@@ -22,7 +21,7 @@ function TextGeometry (opt) {
 
   // use these as default values for any subsequent
   // calls to update()
-  this._opt = assign({}, opt)
+  this._opt = Object.assign({}, opt)
 
   // also do an initial setup...
   if (opt) this.update(opt)
@@ -36,7 +35,7 @@ TextGeometry.prototype.update = function (opt) {
   }
 
   // use constructor defaults
-  opt = assign({}, this._opt, opt)
+  opt = Object.assign({}, this._opt, opt)
 
   if (!opt.font) {
     throw new TypeError('must specify a { font } in options')
@@ -66,16 +65,16 @@ TextGeometry.prototype.update = function (opt) {
   // get common vertex data
   var positions = vertices.positions(glyphs)
   var uvs = vertices.uvs(glyphs, texWidth, texHeight, flipY)
-  var indices = createIndices({
+  var indices = createIndices([], {
     clockwise: true,
     type: 'uint16',
     count: glyphs.length
   })
 
   // update vertex data
-  buffer.index(this, indices, 1, 'uint16')
-  buffer.attr(this, 'position', positions, 2)
-  buffer.attr(this, 'uv', uvs, 2)
+  this.setIndex(indices)
+  this.setAttribute('position', new THREE.BufferAttribute(positions, 2))
+  this.setAttribute('uv',  new THREE.BufferAttribute(uvs, 2))
 
   // update multipage data
   if (!opt.multipage && 'page' in this.attributes) {
