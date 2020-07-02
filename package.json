@@ -20,8 +20,7 @@
     "layout-bmfont-text": "^1.2.0",
     "nice-color-palettes": "^3.0.0",
     "object-assign": "^4.0.1",
-    "quad-indices": "^2.0.1",
-    "three-buffer-vertex-data": "^1.0.0"
+    "quad-indices": "^2.0.1"
   },
   "devDependencies": {
     "bluebird": "^3.7.2",

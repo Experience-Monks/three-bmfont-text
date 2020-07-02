@@ -161,6 +161,10 @@ See [text-modules](https://github.com/mattdesl/text-modules) for more text and f
 
 ## Change Log
 
+- `3.0.1`
+
+  - Removed `three-buffer-vertex-data` dependency
+
 - `3.0.0`
 
   - Fixed `BufferAttribute` problems in new ThreeJS
