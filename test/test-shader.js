@@ -6,7 +6,6 @@
 
 global.THREE = require('three')
 var quote = require('sun-tzu-quotes')
-var buffer = require('three-buffer-vertex-data')
 var createOrbitViewer = require('three-orbit-viewer')(THREE)
 var createBackground = require('three-vignette-background')
 var createText = require('../')
@@ -35,6 +34,8 @@ function start (font, texture) {
     flipY: texture.flipY
   })
 
+  // geom.setAttribute('line', new Float32Array(lineData));
+
   var material = new THREE.RawShaderMaterial({
     vertexShader: glslify(__dirname + '/shaders/fx.vert'),
     fragmentShader: glslify(__dirname + '/shaders/fx.frag'),
@@ -43,9 +44,6 @@ function start (font, texture) {
       iGlobalTime: { type: 'f', value: 0 },
       map: { type: 't', value: texture },
       color: { type: 'c', value: new THREE.Color('#000') }
-    },
-    attributes: { // not needed in > ThreeJS r72
-      line: { type: 'f', value: 0 }
     },
     transparent: true,
     side: THREE.DoubleSide,
@@ -107,7 +105,7 @@ function start (font, texture) {
     }, [])
 
     // update the "line" vertex attribute
-    buffer.attr(geom, 'line', lineData, 1)
+    geom.setAttribute('line', new THREE.BufferAttribute(new Float32Array(lineData), 1));
 
     // center the text
     var layout = geom.layout
