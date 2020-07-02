@@ -1,7 +1,6 @@
 var createLayout = require('layout-bmfont-text')
 var inherits = require('inherits')
 var createIndices = require('quad-indices')
-var buffer = require('three-buffer-vertex-data')
 
 var vertices = require('./lib/vertices')
 var utils = require('./lib/utils')
@@ -74,16 +73,16 @@ TextGeometry.prototype.update = function (opt) {
   // update vertex data
   this.setIndex(indices)
   this.setAttribute('position', new THREE.BufferAttribute(positions, 2))
-  this.setAttribute('uv',  new THREE.BufferAttribute(uvs, 2))
+  this.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
 
   // update multipage data
   if (!opt.multipage && 'page' in this.attributes) {
     // disable multipage rendering
     this.removeAttribute('page')
   } else if (opt.multipage) {
-    var pages = vertices.pages(glyphs)
     // enable multipage rendering
-    buffer.attr(this, 'page', pages, 1)
+    var pages = vertices.pages(glyphs)
+    this.setAttribute('page', new THREE.BufferAttribute(pages, 1))
   }
 }
 
