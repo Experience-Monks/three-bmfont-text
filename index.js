@@ -5,6 +5,9 @@ var createIndices = require('quad-indices')
 var vertices = require('./lib/vertices')
 var utils = require('./lib/utils')
 
+var has_require = typeof require !== 'undefined'
+var THREE = root.THREE || (has_require && require('three'))
+
 var Base = THREE.BufferGeometry
 
 module.exports = function createTextGeometry (opt) {
