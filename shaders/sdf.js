@@ -14,50 +14,70 @@ module.exports = function createSDFShader (opt) {
   delete opt.precision
   delete opt.opacity
 
-  return assign({
-    uniforms: {
-      opacity: { type: 'f', value: opacity },
-      map: { type: 't', value: map || new THREE.Texture() },
-      color: { type: 'c', value: new THREE.Color(color) }
+  const webgl2 = document.getElementsByTagName('canvas')[0].getContext('webgl2')
+
+  return assign(
+    {
+      uniforms: {
+        opacity: { value: opacity },
+        map: { value: map || new THREE.Texture() },
+        color: { value: new THREE.Color(color) }
+      },
+      vertexShader: `${
+				webgl2
+					? `#version 300 es
+
+#define attribute in
+#define varying out`
+					: ''
+			}
+attribute vec2 uv;
+attribute vec3 position;
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+
+varying vec2 vUv;
+
+void main() {
+vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`,
+      fragmentShader: `${
+				webgl2
+					? `#version 300 es
+#define varying in
+out highp vec4 pc_fragColor;
+
+#define texture2D texture
+#define gl_FragColor pc_fragColor`
+					: ''
+			}
+#ifdef GL_OES_standard_derivatives
+  #extension GL_OES_standard_derivatives : enable
+#endif
+precision ${precision} float;
+uniform float opacity;
+uniform vec3 color;
+uniform sampler2D map;
+varying vec2 vUv;
+
+float aastep(float value) {
+  #ifdef GL_OES_standard_derivatives
+    float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;
+  #else
+    float afwidth = (1.0 / 32.0) * (1.4142135623730951 / (2.0 * gl_FragCoord.w));
+  #endif
+  return smoothstep(0.5 - afwidth, 0.5 + afwidth, value);
+}
+
+void main() {
+  vec4 texColor = texture2D(map, vUv);
+  float alpha = aastep(texColor.a);
+  gl_FragColor = vec4(color, opacity * alpha);
+  ${alphaTest === 0 ? '' : `if (gl_FragColor.a < ${alphaTest}) discard;`}
+}`
     },
-    vertexShader: [
-      'attribute vec2 uv;',
-      'attribute vec4 position;',
-      'uniform mat4 projectionMatrix;',
-      'uniform mat4 modelViewMatrix;',
-      'varying vec2 vUv;',
-      'void main() {',
-      'vUv = uv;',
-      'gl_Position = projectionMatrix * modelViewMatrix * position;',
-      '}'
-    ].join('\n'),
-    fragmentShader: [
-      '#ifdef GL_OES_standard_derivatives',
-      '#extension GL_OES_standard_derivatives : enable',
-      '#endif',
-      'precision ' + precision + ' float;',
-      'uniform float opacity;',
-      'uniform vec3 color;',
-      'uniform sampler2D map;',
-      'varying vec2 vUv;',
-
-      'float aastep(float value) {',
-      '  #ifdef GL_OES_standard_derivatives',
-      '    float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;',
-      '  #else',
-      '    float afwidth = (1.0 / 32.0) * (1.4142135623730951 / (2.0 * gl_FragCoord.w));',
-      '  #endif',
-      '  return smoothstep(0.5 - afwidth, 0.5 + afwidth, value);',
-      '}',
-
-      'void main() {',
-      '  vec4 texColor = texture2D(map, vUv);',
-      '  float alpha = aastep(texColor.a);',
-      '  gl_FragColor = vec4(color, opacity * alpha);',
-      alphaTest === 0
-        ? ''
-        : '  if (gl_FragColor.a < ' + alphaTest + ') discard;',
-      '}'
-    ].join('\n')
-  }, opt)
+    opt
+  )
 }

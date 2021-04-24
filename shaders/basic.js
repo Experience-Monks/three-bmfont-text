@@ -14,36 +14,56 @@ module.exports = function createBasicShader (opt) {
   delete opt.precision
   delete opt.opacity
 
-  return assign({
-    uniforms: {
-      opacity: { type: 'f', value: opacity },
-      map: { type: 't', value: map || new THREE.Texture() },
-      color: { type: 'c', value: new THREE.Color(color) }
-    },
-    vertexShader: [
-      'attribute vec2 uv;',
-      'attribute vec4 position;',
-      'uniform mat4 projectionMatrix;',
-      'uniform mat4 modelViewMatrix;',
-      'varying vec2 vUv;',
-      'void main() {',
-      'vUv = uv;',
-      'gl_Position = projectionMatrix * modelViewMatrix * position;',
-      '}'
-    ].join('\n'),
-    fragmentShader: [
-      'precision ' + precision + ' float;',
-      'uniform float opacity;',
-      'uniform vec3 color;',
-      'uniform sampler2D map;',
-      'varying vec2 vUv;',
+  const webgl2 = document.getElementsByTagName('canvas')[0].getContext('webgl2')
 
-      'void main() {',
-      '  gl_FragColor = texture2D(map, vUv) * vec4(color, opacity);',
-      alphaTest === 0
-        ? ''
-        : '  if (gl_FragColor.a < ' + alphaTest + ') discard;',
-      '}'
-    ].join('\n')
-  }, opt)
+  return assign(
+    {
+      uniforms: {
+        opacity: { value: opacity },
+        map: { value: map || new THREE.Texture() },
+        color: { value: new THREE.Color(color) }
+      },
+      vertexShader: `${
+				webgl2
+					? `#version 300 es
+
+#define attribute in
+#define varying out`
+					: ''
+			}
+attribute vec2 uv;
+attribute vec3 position;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+
+varying vec2 vUv;
+
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`,
+      fragmentShader: `${
+				webgl2
+					? `#version 300 es
+#define varying in
+out highp vec4 pc_fragColor;
+
+#define texture2D texture
+#define gl_FragColor pc_fragColor`
+					: ''
+			}
+precision ${precision} float;
+uniform float opacity;
+uniform vec3 color;
+uniform sampler2D map;
+
+varying vec2 vUv;
+
+void main() {
+  gl_FragColor = texture2D(map, vUv) * vec4(color, opacity);
+  ${alphaTest === 0 ? '' : `if (gl_FragColor.a < ${alphaTest}) discard;`}
+}`
+    },
+    opt
+  )
 }
