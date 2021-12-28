@@ -1,6 +1,6 @@
 {
   "name": "three-bmfont-text",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "renders BMFont files in ThreeJS with word-wrapping",
   "main": "index.js",
   "license": "MIT",
@@ -33,7 +33,7 @@
     "load-bmfont": "^1.0.0",
     "standard": "^14.3.4",
     "sun-tzu-quotes": "^1.0.0",
-    "three": "^0.118.3",
+    "three": "^0.136.0",
     "three-orbit-viewer": "^69.2.9",
     "three-vignette-background": "^1.0.2",
     "uglify-js": "^3.10.0"
